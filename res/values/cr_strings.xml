@@ -80,7 +80,7 @@
     <string name="work_apps_enable_btn_text_calyx">Turn on work apps</string>
     <string name="work_apps_paused_info_body_custom">Your work apps can’t send you notifications, use your battery, or access your location</string>
     <string name="work_apps_paused_telephony_unavailable_body_custom">Your work apps can’t receive phone calls or text messages, send you notifications, use your battery, or access your location</string>
-    
+
     <!-- Suggestions -->
     <string name="suggestion_pref_screen_title">Suggestions</string>
     <string name="suggestion_pref_screen_desc">For All Apps &amp; Home screen suggestions</string>
@@ -483,4 +483,9 @@
     <string name="action_lock">Lock/Unlock app</string>
     <string name="unlock_app">Unlocked app in recents</string>
     <string name="lock_app">Locked app in recents</string>
+
+    <!-- Themed icons toggle -->
+    <string name="themed_icons_title">Themed icons</string>
+    <string name="themed_icons_summary_on">Themed icons enabled</string>
+    <string name="themed_icons_summary_off">Themed icons disabled</string>
 </resources>
