@@ -29,4 +29,9 @@
         <attr name="android:tint" />
         <attr name="android:drawable" />
     </declare-styleable>
+
+    <!-- Wallpaper preview -->
+    <declare-styleable name="WallpaperView">
+        <attr name="blurred" format="boolean" />
+    </declare-styleable>
 </resources>
