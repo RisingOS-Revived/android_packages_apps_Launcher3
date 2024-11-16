@@ -28,5 +28,8 @@
         <permission name="com.android.alarm.permission.SET_ALARM"/>
         <permission name="android.permission.REGISTER_STATS_PULL_ATOM"/>
         <permission name="android.permission.PACKAGE_USAGE_STATS"/>
+        <permission name="android.permission.READ_EXTERNAL_STORAGE"/>
+        <permission name="android.permission.READ_MEDIA_IMAGES"/>
+        <permission name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     </privapp-permissions>
 </permissions>
