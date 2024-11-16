@@ -361,6 +361,10 @@ constructor(@ApplicationContext private val encryptedContext: Context) {
         val RECONFIGURABLE_WIDGET_EDUCATION_TIP_SEEN =
             backedUpItem("launcher.reconfigurable_widget_education_tip_seen", false)
 
+        @JvmField
+         val SELECTED_UI_LAYOUT =
+             backedUpItem("selected_ui_layout", "launcher_preferences")
+
         @JvmStatic
         fun <T> backedUpItem(
             sharedPrefKey: String,

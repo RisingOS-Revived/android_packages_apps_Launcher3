@@ -41,5 +41,7 @@
     <color name="homepage_purple_fg">@color/m3_ref_palette_purple30</color>
     <color name="homepage_purple_bg">@color/m3_ref_palette_purple90</color>
 
+    <!-- Rising -->
     <color name="op_control_text_color_secondary">#66000000</color>
+    <color name="rising_color">#1C1C1C</color>
 </resources>
