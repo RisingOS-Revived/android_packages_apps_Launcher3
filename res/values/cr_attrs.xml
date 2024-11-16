@@ -37,4 +37,9 @@
     <attr name="qsbIconTintQuaternary" format="color" />
     <attr name="qsbIconTintSecondary" format="color" />
     <attr name="qsbIconTintTertiary" format="color" />
+
+    <!-- Wallpaper preview -->
+    <declare-styleable name="WallpaperView">
+        <attr name="blurred" format="boolean" />
+    </declare-styleable>
 </resources>
