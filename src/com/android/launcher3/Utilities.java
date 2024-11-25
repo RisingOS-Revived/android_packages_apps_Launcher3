@@ -1033,4 +1033,8 @@ public final class Utilities {
     public static void startLmoFreeform(Context context, ComponentName activity) {
         startLmoFreeform(context, activity, UserHandle.myUserId());
     }
+
+    public static int getLauncher() {
+        return android.os.SystemProperties.getInt("persist.sys.default_launcher", 0);
+    }
 }
