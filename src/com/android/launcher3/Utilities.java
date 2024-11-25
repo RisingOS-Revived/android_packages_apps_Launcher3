@@ -1090,4 +1090,8 @@ public final class Utilities {
     public static boolean isMusicSearchEnabled(Context context) {
         return isGSAEnabled(context) && LauncherPrefs.DOCK_MUSIC_SEARCH.get(context);
     }
+
+    public static int getLauncher() {
+        return android.os.SystemProperties.getInt("persist.sys.default_launcher", 0);
+    }
 }
