@@ -1072,12 +1072,14 @@ public abstract class RecentsView<
         } else {
             mEmptyIcon = mContext.getDrawable(R.drawable.ic_view_carousel);
             mEmptyIcon.setCallback(this);
-            mEmptyMessage = mContext.getText(R.string.recents_empty_message);
+            int defaultLauncher = android.os.SystemProperties.getInt(
+                    "persist.sys.default_launcher", 0);
+            mEmptyMessage = defaultLauncher == 2 ? "" : mContext.getText(R.string.recents_empty_message);
             mEmptyMessagePaint = new TextPaint();
             mEmptyMessagePadding = getResources().getDimensionPixelSize(
                     R.dimen.recents_empty_message_text_padding);
-            mEmptyMessagePaint.setColor(
-                    getResources().getColor(R.color.materialColorOnSurface, mContext.getTheme()));
+            mEmptyIcon.setTint(defaultLauncher == 2 ? Color.TRANSPARENT : Color.WHITE);
+            mEmptyMessagePaint.setColor(defaultLauncher == 2 ? Color.TRANSPARENT : Color.WHITE);
             mEmptyMessagePaint.setTextSize(getResources()
                     .getDimension(R.dimen.recents_empty_message_text_size));
             mEmptyMessagePaint.setTypeface(FontUtils.getTypeFace(getResources()));
@@ -3850,7 +3852,9 @@ public abstract class RecentsView<
         }
         mShowEmptyMessage = isEmpty;
         if (mEmptyRecentsMessageView != null) {
-            ViewKt.setVisible(mEmptyRecentsMessageView, isEmpty);
+            // Hide the empty recents view when using Lawnchair
+            ViewKt.setVisible(mEmptyRecentsMessageView, isEmpty
+                    && android.os.SystemProperties.getInt("persist.sys.default_launcher", 0) != 2);
         } else {
             setContentDescription(isEmpty ? mEmptyMessage : "");
             setFocusable(isEmpty);
