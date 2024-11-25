@@ -1124,6 +1124,10 @@ public final class Utilities {
     public static boolean isShowMeminfo(Context context) {
         SharedPreferences prefs = LauncherPrefs.getPrefs(context.getApplicationContext());
         return prefs.getBoolean(KEY_RECENTS_MEMINFO, false);
+   }
+
+    public static int getLauncher() {
+        return android.os.SystemProperties.getInt("persist.sys.default_launcher", 0);
     }
 
     public static boolean isShowMeminfoZram(Context context) {
