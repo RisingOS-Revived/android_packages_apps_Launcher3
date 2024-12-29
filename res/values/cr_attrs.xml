@@ -23,6 +23,7 @@
         <attr name="showSign" format="boolean" />
         <attr name="units" format="string|reference" />
         <attr name="continuousUpdates" format="boolean" />
+        <attr name="customlayout" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="TintDrawable">

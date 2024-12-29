@@ -37,4 +37,6 @@
     <dimen name="dashboard_tile_foreground_image_size">24dp</dimen>
     <dimen name="dashboard_tile_foreground_image_inset">8dp</dimen>
     <dimen name="preference_icon_foreground_image_inset">12dp</dimen>
+    
+    <dimen name="homepage_preference_text_padding_start">16dp</dimen>
 </resources>
