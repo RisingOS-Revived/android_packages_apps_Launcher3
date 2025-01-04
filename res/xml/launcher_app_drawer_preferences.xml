@@ -24,15 +24,16 @@
         android:title="@string/pref_themed_icons_title"
         android:summary="@string/pref_themed_icons_summary"
         android:persistent="true"
-        launcher:iconSpaceReserved="false" />
+        launcher:iconSpaceReserved="false"
+        android:layout="@layout/settings_layout_top" />
 
-   <SwitchPreferenceCompat
+    <SwitchPreferenceCompat
         android:key="pref_drawer_search"
         android:title="@string/drawer_search_title"
         android:summary="@string/drawer_search_summary"
         android:defaultValue="true"
         launcher:iconSpaceReserved="false"
-        android:layout="@layout/settings_layout_top" />
+        android:layout="@layout/settings_layout_middle" />
 
     <SwitchPreferenceCompat
         android:key="pref_auto_keyboard"
