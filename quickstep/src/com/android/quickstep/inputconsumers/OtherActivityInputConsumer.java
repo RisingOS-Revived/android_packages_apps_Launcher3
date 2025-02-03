@@ -65,6 +65,11 @@ import com.android.systemui.shared.system.InputMonitorCompat;
 
 import java.util.function.Consumer;
 
+
+import android.content.ComponentName;
+import android.content.Intent;
+import com.android.quickstep.TopTaskTracker;
+
 /**
  * Input consumer for handling events originating from an activity other than Launcher
  */
@@ -75,6 +80,13 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
 
     public static final String DOWN_EVT = "OtherActivityInputConsumer.DOWN";
     private static final String UP_EVT = "OtherActivityInputConsumer.UP";
+
+    private static final String ACTION_START_FREEFORM = "com.libremobileos.freeform.START_FREEFORM";
+    private static final String PACKAGE_FREEFORM = "com.libremobileos.freeform";
+
+    private final float mFreeformGestureThreshold;
+    private boolean mFreeformGestureStarted;
+    private boolean mAboveThreshold;
 
     // Minimum angle of a gesture's coordinate where a release goes to overview.
     public static final int OVERVIEW_MIN_DEGREES = 15;
@@ -156,8 +168,23 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
         mStartDisplacement = continuingPreviousGesture ? 0 : -mTouchSlop;
         mDisableHorizontalSwipe = !mPassedPilferInputSlop && disableHorizontalSwipe;
         mRotationTouchHelper = mDeviceState.getRotationTouchHelper();
+        float screenHeight = getBaseContext().getResources().getDisplayMetrics().heightPixels;
+        mFreeformGestureThreshold = (screenHeight * 0.8f) * (screenHeight * 0.8f);
+        mFreeformGestureStarted = false;
     }
-
+    private boolean shouldTriggerFreeformGesture(PointF lastPos, PointF downPos) {
+        if (mFreeformGestureStarted) {
+            return false; // Don't retrigger if we've already started
+        }
+        float displacementY = lastPos.y - downPos.y;
+        float displacement = Math.abs(displacementY);
+        return (displacement * displacement) >= mFreeformGestureThreshold;
+    }
+    private boolean isAboveThreshold(PointF lastPos, PointF downPos) {
+        float displacementY = lastPos.y - downPos.y;
+        float displacement = Math.abs(displacementY);
+        return (displacement * displacement) >= mFreeformGestureThreshold;
+    }
     @Override
     public int getType() {
         return TYPE_OTHER_ACTIVITY;
@@ -275,7 +302,20 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
                 float displacement = getDisplacement(ev);
                 float displacementX = mLastPos.x - mDownPos.x;
                 float displacementY = mLastPos.y - mDownPos.y;
-
+                mAboveThreshold = isAboveThreshold(mLastPos, mDownPos);
+                if (mPassedPilferInputSlop && mAboveThreshold && !mFreeformGestureStarted) {
+                    if (DEBUG) {
+                        Log.d(TAG, "ACTION_MOVE: Freeform gesture threshold reached");
+                    }
+                    mFreeformGestureStarted = true;
+                    notifyGestureStarted(true);
+                } else if (mFreeformGestureStarted && !mAboveThreshold) {
+                    if (DEBUG) {
+                        Log.d(TAG, "ACTION_MOVE: Dropped below freeform threshold");
+                    }
+                    // We dropped below threshold, cancel freeform intent
+                    mFreeformGestureStarted = false;
+                }
                 if (!mPassedWindowMoveSlop) {
                     if (!mIsDeferredDownTarget) {
                         // Normal gesture, ensure we pass the drag slop before we start tracking
@@ -377,7 +417,24 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
                 }
                 break;
             }
-            case ACTION_CANCEL:
+            case ACTION_CANCEL: {
+                // Only complete freeform if we're still above threshold
+                if (mFreeformGestureStarted && mAboveThreshold) {
+                    if (DEBUG) {
+                        Log.d(TAG, "ACTION_UP: Freeform gesture completed above threshold");
+                    }
+                    // Launch freeform here
+                } else if (mFreeformGestureStarted) {
+                    if (DEBUG) {
+                        Log.d(TAG, "ACTION_UP: Freeform gesture cancelled - below threshold");
+                    }
+                }
+                // Reset state
+                mFreeformGestureStarted = false;
+                mAboveThreshold = false;
+                finishTouchTracking(ev);
+                break;
+            }
             case ACTION_UP: {
                 if (DEBUG_FAILED_QUICKSWITCH && !mPassedWindowMoveSlop) {
                     float displacementX = mLastPos.x - mDownPos.x;
@@ -439,12 +496,40 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
         return mInteractionHandler != null;
     }
 
+    private void startFreeformMode() {
+        TopTaskTracker.CachedTaskInfo taskInfo = mGestureState.getRunningTask();
+        if (taskInfo != null) {
+            // Get package name and userId from taskInfo using public methods
+            String packageName = taskInfo.getPackageName();
+            int userId = taskInfo.getUserId() != null ? taskInfo.getUserId() : 0;
+
+            if (packageName != null) {
+                if (DEBUG) {
+                    Log.d(TAG, "Starting freeform for package: " + packageName);
+                }
+
+                // The component class name will be obtained by the freeform service
+                // from the package's main activity
+                Intent freeformIntent = new Intent(ACTION_START_FREEFORM)
+                    .setPackage(PACKAGE_FREEFORM)
+                    .putExtra("packageName", packageName)
+                    .putExtra("userId", userId);
+
+                sendBroadcast(freeformIntent);
+            }
+        }
+    }
+
     /**
      * Called when the gesture has ended. Does not correlate to the completion of the interaction as
      * the animation can still be running.
      */
     private void finishTouchTracking(MotionEvent ev) {
         TraceHelper.INSTANCE.beginSection(UP_EVT);
+        if (DEBUG) {
+            Log.d(TAG, "finishTouchTracking: mFreeformGestureStarted=" + mFreeformGestureStarted);
+            Log.d(TAG, "finishTouchTracking: mPassedWindowMoveSlop=" + mPassedWindowMoveSlop);
+        }
         if (DEBUG) {
             Log.d(TAG, "finishTouchTracking: mPassedWindowMoveSlop=" + mPassedWindowMoveSlop);
             Log.d(TAG, "finishTouchTracking: mInteractionHandler=" + mInteractionHandler);
@@ -453,7 +538,15 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
 
         boolean isCanceled = ev.getActionMasked() == ACTION_CANCEL;
         if (mPassedWindowMoveSlop && mInteractionHandler != null) {
-            if (isCanceled) {
+            if (mFreeformGestureStarted && mAboveThreshold) {
+            // If we're in a freeform gesture and still above threshold, cancel recents
+            if (DEBUG) {
+                Log.d(TAG, "Canceling recents for freeform mode");
+            }
+            mInteractionHandler.onGestureCancelled();
+            startFreeformMode();
+            }
+            else if (isCanceled) {
                 mInteractionHandler.onGestureCancelled();
             } else {
                 mVelocityTracker.computeCurrentVelocity(PX_PER_MS);
