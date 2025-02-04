@@ -543,7 +543,6 @@ public class OtherActivityInputConsumer extends ContextWrapper implements InputC
             if (DEBUG) {
                 Log.d(TAG, "Canceling recents for freeform mode");
             }
-            mInteractionHandler.onGestureCancelled();
             startFreeformMode();
             }
             else if (isCanceled) {
