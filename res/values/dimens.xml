@@ -600,4 +600,6 @@
     <dimen name="folder_creator_preview_icon_inner_spacing">5dp</dimen>
     <dimen name="folder_creator_preview_icon_padding_bottom">8dp</dimen>
     <dimen name="folder_creator_actions_padding">16dp</dimen>
+    
+    <dimen name="theme_icon_size">24.0dip</dimen>
 </resources>
