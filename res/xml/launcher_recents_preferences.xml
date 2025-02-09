@@ -29,6 +29,14 @@
             android:persistent="true"
             launcher:iconSpaceReserved="false"
             android:layout="@layout/settings_layout_solo_no_summary" />
+
+        <SwitchPreferenceCompat
+            android:key="pref_recents_meminfo_zram"
+            android:title="@string/recents_meminfo_zram_title"
+            android:defaultValue="true"
+            android:persistent="true"
+            android:dependency="pref_recents_meminfo"
+            launcher:iconSpaceReserved="false" />
     </PreferenceCategory>
 
     <PreferenceCategory
