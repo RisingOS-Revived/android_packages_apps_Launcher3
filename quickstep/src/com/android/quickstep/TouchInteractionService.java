@@ -414,7 +414,6 @@ public class TouchInteractionService extends Service {
                     taskbarManager.onNavigationBarLumaSamplingEnabled(displayId, enable));
         }
 
-        @Override
         public void onUnbind(IRemoteCallback reply) {
             // Run everything in the same main thread block to ensure the cleanup happens before
             // sending the reply.
