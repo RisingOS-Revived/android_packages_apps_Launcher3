@@ -429,7 +429,7 @@ android_library {
 // Build rule for Launcher3 app.
 //
 android_app {
-    name: "Launcher3",
+    name: "Trebuchet",
     defaults: ["launcher-non-platform-apis-defaults"],
 
     static_libs: [
@@ -458,6 +458,7 @@ android_app {
     overrides: [
         "Home",
         "Launcher2",
+        "Launcher3",
         "QuickSearchBox",
     ],
     required: [
@@ -585,7 +586,7 @@ android_library {
 
 // Build rule for Quickstep app.
 android_app {
-    name: "Launcher3QuickStep",
+    name: "TrebuchetQuickStep",
     static_libs: ["Launcher3QuickStepLib"],
     optimize: {
         proguard_flags_files: [":launcher-proguard-rules"],
@@ -604,6 +605,7 @@ android_app {
         "Home",
         "Launcher2",
         "Launcher3",
+        "Launcher3QuickStep",
         "QuickSearchBox",
     ],
     required: [
@@ -630,7 +632,7 @@ android_app {
 // Note that the following two rules are exactly same, and should
 // eventually be merged into a single target
 android_app {
-    name: "Launcher3Go",
+    name: "TrebuchetGo",
     static_libs: ["Launcher3GoLib"],
     resource_dirs: [],
 
@@ -652,6 +654,7 @@ android_app {
         "Launcher2",
         "Launcher3",
         "Launcher3QuickStep",
+        "Launcher3Go",
         "QuickSearchBox",
     ],
     required: [
@@ -672,7 +675,7 @@ android_app {
 }
 
 android_app {
-    name: "Launcher3QuickStepGo",
+    name: "TrebuchetQuickStepGo",
     static_libs: ["Launcher3GoLib"],
     resource_dirs: [],
 
@@ -694,6 +697,7 @@ android_app {
         "Launcher2",
         "Launcher3",
         "Launcher3QuickStep",
+        "Launcher3QuickStepGo",
         "QuickSearchBox",
     ],
     required: [
