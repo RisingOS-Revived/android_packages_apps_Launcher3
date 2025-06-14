@@ -283,6 +283,7 @@ constructor(@ApplicationContext private val encryptedContext: Context) {
         @JvmField val PROMISE_ICON_IDS = backedUpItem(InstallSessionHelper.PROMISE_ICON_IDS, "")
         @JvmField val WALLPAPER_SCROLLING = backedUpItem("pref_allow_wallpaper_scrolling", true)
         @JvmField val WORK_EDU_STEP = backedUpItem("showed_work_profile_edu", 0)
+        @JvmField val ANIMATION_BLUR = backedUpItem("pref_blur_background_at_app_launch", true)
         @JvmField val SLEEP_GESTURE = backedUpItem("pref_sleep_gesture", true)
         @JvmField val SLEEP_GESTURE_HAPTIC = backedUpItem("pref_sleep_gesture_haptic", true)
         @JvmField
