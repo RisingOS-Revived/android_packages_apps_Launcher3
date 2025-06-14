@@ -1094,4 +1094,8 @@ public final class Utilities {
     public static int getLauncher() {
         return android.os.SystemProperties.getInt("persist.sys.default_launcher", 0);
     }
+
+    public static boolean blurBackgroundAtAppLaunch(Context context) {
+        return LauncherPrefs.ANIMATION_BLUR.get(context);
+    }
 }
