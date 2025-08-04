@@ -595,7 +595,7 @@ public class DeviceProfile {
                 cellStyle = context.obtainStyledAttributes(inv.cellStyle,
                         R.styleable.CellStyle);
             } else {
-                cellStyle = context.obtainStyledAttributes(R.style.CellStyleDefault,
+                cellStyle = context.obtainStyledAttributes(R.style.NTCellStyleDefault,
                         R.styleable.CellStyle);
             }
             mIconDrawablePaddingOriginalPx = cellStyle.getDimensionPixelSize(
@@ -1500,7 +1500,7 @@ public class DeviceProfile {
             allAppsIconSizePx = Math.max(1, pxFromDp(invIconSizeDp, mMetrics, scale));
             allAppsIconTextSizePx = (int) (pxFromSp(invIconTextSizeSp, mMetrics) * scale);
             allAppsIconDrawablePaddingPx =
-                    res.getDimensionPixelSize(R.dimen.all_apps_icon_drawable_padding);
+                    res.getDimensionPixelSize(R.dimen.nt_all_apps_icon_drawable_padding);
             allAppsCellWidthPx = allAppsIconSizePx + (2 * allAppsIconDrawablePaddingPx);
         }
     }
