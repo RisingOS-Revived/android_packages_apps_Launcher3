@@ -77,10 +77,10 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
             @Override
             public void run() {
                 try {
-                    mWeatherClient.queryWeather(mContext);
+                    mWeatherClient.queryWeather();
                     mWeatherInfo = mWeatherClient.getWeatherInfo();
                     if (mWeatherInfo != null) {
-                        mConditionImage = mWeatherClient.getWeatherConditionImage(mContext, mWeatherInfo.conditionCode);
+                        mConditionImage = mWeatherClient.getWeatherConditionImage(mWeatherInfo.conditionCode);
                     }
                 } catch(Exception e) {
                     // Do nothing
@@ -96,7 +96,7 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
         mContext = context;
         mConditionMap = initializeConditionMap();
         mEventsController = new QuickEventsController(context);
-        mWeatherClient = OmniJawsClient.get();
+        mWeatherClient = new OmniJawsClient(mContext);
 
         mPsaRunnable = new Runnable() {
             @Override
@@ -112,7 +112,7 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
 
     private void addWeatherProvider() {
         if (!LauncherPrefs.SHOW_QUICKSPACE_WEATHER.get(mContext)) return;
-        mWeatherClient.addObserver(mContext, this);
+        mWeatherClient.addObserver(this);
         queryAndUpdateWeather();
     }
 
@@ -127,7 +127,7 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
 
     private void removeListener(OnDataListener listener) {
         if (mWeatherClient != null) {
-            mWeatherClient.removeObserver(mContext, this);
+            mWeatherClient.removeObserver(this);
         }
         mListeners.remove(listener);
     }
@@ -141,7 +141,7 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
     }
 
     public boolean isWeatherAvailable() {
-        return mWeatherClient != null && mWeatherClient.isOmniJawsEnabled(mContext);
+        return mWeatherClient != null && mWeatherClient.isOmniJawsEnabled();
     }
 
     public Drawable getWeatherIcon() {
