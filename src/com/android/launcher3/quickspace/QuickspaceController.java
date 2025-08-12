@@ -92,10 +92,10 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
             public void run() {
                 try {
                     if (mWeatherClient == null) return;
-                    mWeatherClient.queryWeather(mContext);
+                    mWeatherClient.queryWeather();
                     mWeatherInfo = mWeatherClient.getWeatherInfo();
                     if (mWeatherInfo != null) {
-                        mConditionImage = mWeatherClient.getWeatherConditionImage(mContext, mWeatherInfo.conditionCode);
+                        mConditionImage = mWeatherClient.getWeatherConditionImage(mWeatherInfo.conditionCode);
                     }
                     notifyListeners();
                 } catch(Exception e) {
@@ -179,9 +179,9 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
 
     private void addOmniJawsIfEnabled() {
         if (!LauncherPrefs.SHOW_QUICKSPACE_WEATHER.get(mContext)) return;
-        if (mWeatherClient == null) mWeatherClient = OmniJawsClient.get();
+        if (mWeatherClient == null) mWeatherClient = new OmniJawsClient(mContext);
         if (!mOmniRegistered) {
-            mWeatherClient.addObserver(mContext, this);
+            mWeatherClient.addObserver(this);
             mOmniRegistered = true;
         }
         queryAndUpdateWeather();
@@ -253,7 +253,7 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
 
     private void removeOmniIfRegistered() {
         if (mOmniRegistered && mWeatherClient != null) {
-            mWeatherClient.removeObserver(mContext, this);
+            mWeatherClient.removeObserver(this);
             mOmniRegistered = false;
         }
         mWeatherClient = null;
@@ -290,7 +290,7 @@ public class QuickspaceController implements OmniJawsClient.OmniJawsObserver,
         if (mProvider == WeatherProvider.SERAPHIX) {
             return !TextUtils.isEmpty(mSeraphixText) || mSeraphixIcon != null;
         } else {
-            return mWeatherClient != null && mWeatherClient.isOmniJawsEnabled(mContext);
+            return mWeatherClient != null && mWeatherClient.isOmniJawsEnabled();
         }
     }
 
