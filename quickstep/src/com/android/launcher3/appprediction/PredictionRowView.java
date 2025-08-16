@@ -20,8 +20,6 @@ import static android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -78,10 +76,6 @@ public class PredictionRowView<T extends Context & ActivityContext>
     private boolean mPredictionsEnabled = false;
 
     private boolean mPredictionUiUpdatePaused = false;
-    
-    private final Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private final float mCornerRadius;
-    private boolean mDrawBackground = true;
 
     public PredictionRowView(@NonNull Context context) {
         this(context, null);
@@ -98,11 +92,6 @@ public class PredictionRowView<T extends Context & ActivityContext>
                 R.dimen.all_apps_search_top_row_extra_height);
         mVerticalPadding = getResources().getDimensionPixelSize(
                 R.dimen.all_apps_predicted_icon_vertical_padding);
-                
-        setWillNotDraw(false);
-        mBgPaint.setColor(getContext().getColor(R.color.nt_all_apps_content_background_color));
-        mCornerRadius = getResources().getDimension(R.dimen.all_apps_bg_corner_radius);
-        setPadding(0,0,0,0);
         updateVisibility();
     }
 
@@ -149,26 +138,8 @@ public class PredictionRowView<T extends Context & ActivityContext>
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (mDrawBackground && getChildCount() > 0) {
-            float left = getPaddingLeft();
-            float top = getPaddingTop();
-            float right = getWidth() - getPaddingRight();
-            float bottom = getHeight() - getPaddingBottom();
-
-            canvas.drawRoundRect(
-                    new RectF(left, top, right, bottom),
-                    mCornerRadius, mCornerRadius, mBgPaint
-            );
-        }
-
         mFocusHelper.draw(canvas);
         super.dispatchDraw(canvas);
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        int extraH = getResources().getDimensionPixelSize(R.dimen.all_apps_padding_horizontal);
-        super.setPadding(left + extraH, top, right + extraH, bottom);
     }
 
     @Override

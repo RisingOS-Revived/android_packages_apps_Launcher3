@@ -22,7 +22,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.util.Consumer;
 
-import com.android.launcher3.R;
 import com.android.launcher3.views.RecyclerViewFastScroller;
 
 /** A RecyclerView for AllApps Search results. */
@@ -43,12 +42,6 @@ public class SearchRecyclerView extends AllAppsRecyclerView {
     public SearchRecyclerView(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        int extraPaddingTop = getResources().getDimensionPixelSize(R.dimen.all_apps_padding_top);
-        super.setPadding(left, top + extraPaddingTop, right, bottom);
     }
 
     @Override
