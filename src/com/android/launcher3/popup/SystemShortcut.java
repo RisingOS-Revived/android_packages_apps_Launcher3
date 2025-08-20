@@ -207,7 +207,20 @@ public abstract class SystemShortcut<T extends ActivityContext> extends ItemInfo
             dismissTaskMenuView();
             Rect sourceBounds = Utilities.getViewBounds(view);
             ActivityOptionsWrapper options = mTarget.getActivityLaunchOptions(view, mItemInfo);
-            if (Launcher.getLauncher(view.getContext()).getStateManager().getState().isRecentsViewVisible) {
+            Context context = view.getContext();
+            boolean isRecentsViewVisible = false;
+            try {
+                if (context instanceof com.android.launcher3.Launcher) {
+                    Launcher launcher = (Launcher) context;
+                    isRecentsViewVisible = launcher.getStateManager().getState().isRecentsViewVisible;
+                }
+                else if (context instanceof com.android.quickstep.RecentsActivity) {
+                    isRecentsViewVisible = true;
+                }
+            } catch (Exception e) {
+                isRecentsViewVisible = true;
+            }
+            if (isRecentsViewVisible) {
                 PackageManagerHelper.startDetailsActivityForInfo(view.getContext(), mItemInfo,
                         sourceBounds, options.toBundle());
             } else {
