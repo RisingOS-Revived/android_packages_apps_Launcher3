@@ -413,8 +413,6 @@
     <string name="quick_event_weather_text_title">Current condition</string>
     <string name="quick_event_weather_text_summary">Display current weather condition summary</string>
 
-    <string name="app_info_title">Application Info</string>
-
     <!-- Themed icons toggle -->
     <string name="themed_icons_title">Themed icons</string>
     <string name="themed_icons_summary_on">Themed icons enabled</string>
