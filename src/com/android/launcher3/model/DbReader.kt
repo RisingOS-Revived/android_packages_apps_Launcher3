@@ -177,9 +177,14 @@ class DbReader(val mDb: SQLiteDatabase, val mTableName: String, val mContext: Co
                         }
                     }
 
-                    ITEM_TYPE_FOLDER ->
+                    ITEM_TYPE_FOLDER -> {
                         // Ensure that the folder has at least 2 items.
                         check(getFolderItemsCount(entry) > 1) { "Folder has too few items" }
+                        // Workspace folders can be resized, so they cannot shrink below their
+                        // current span during grid migration.
+                        entry.minSpanX = entry.spanX
+                        entry.minSpanY = entry.spanY
+                    }
 
                     ITEM_TYPE_APP_GROUP -> {
                         // Ensure that the app group has a supported number of items.
