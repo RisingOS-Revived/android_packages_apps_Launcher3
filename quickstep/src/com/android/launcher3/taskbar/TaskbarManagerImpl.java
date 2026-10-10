@@ -178,9 +178,6 @@ public class TaskbarManagerImpl {
     public static final Uri GESTURE_NAVBAR_HEIGHT_MODE_URI = Settings.System.getUriFor(
             Settings.System.GESTURE_NAVBAR_HEIGHT_MODE);
 
-    public static final Uri NAVBAR_IME_SPACE_URI = Settings.Secure.getUriFor(
-            Settings.Secure.NAVBAR_IME_SPACE);
-
     private final Context mBaseContext;
     private final int mPrimaryDisplayId;
     private final TaskbarNavButtonCallbacks mNavCallbacks;
@@ -422,12 +419,6 @@ public class TaskbarManagerImpl {
                         getTaskbarUiThread(),
                         v -> onTaskbarIntChanged(v, TaskbarActivityContext::getNavbarHeightMode));
         cleanupTasks.addCloseable(getTaskbarUiThread(), navbarHeightSafeCloseable);
-
-        var navbarImeSpaceSafeCloseable =
-                settingsCache.getListenableRef(NAVBAR_IME_SPACE_URI).forEach(
-                        getTaskbarUiThread(),
-                        v -> onTaskbarChanged(v, TaskbarActivityContext::imeDrawsImeNavBarEnabled));
-        cleanupTasks.addCloseable(getTaskbarUiThread(), navbarImeSpaceSafeCloseable);
 
         SimpleBroadcastReceiver shutdownReceiver = new SimpleBroadcastReceiver(
                 mBaseContext,

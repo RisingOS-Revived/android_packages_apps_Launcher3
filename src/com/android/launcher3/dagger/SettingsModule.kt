@@ -17,7 +17,6 @@
 package com.android.launcher3.dagger
 
 import android.net.Uri
-import com.android.launcher3.taskbar.TaskbarManagerImpl.NAVBAR_IME_SPACE_URI
 import com.android.launcher3.taskbar.TaskbarManagerImpl.NAVIGATION_BAR_HINT_URI
 import com.android.launcher3.util.SettingsCache.NOTIFICATION_BADGING_URI
 import com.android.launcher3.util.SettingsCache.TOUCHPAD_NATURAL_SCROLLING
@@ -32,11 +31,6 @@ object SettingsModule {
     @IntoSet
     @Named("SETTINGS_ENABLED_BY_DEFAULT")
     fun provideNavigationBarHintDefaults(): Uri = NAVIGATION_BAR_HINT_URI
-
-    @Provides
-    @IntoSet
-    @Named("SETTINGS_ENABLED_BY_DEFAULT")
-    fun provideNavigationBarIMEDefaults(): Uri = NAVBAR_IME_SPACE_URI
 
     @Provides
     @IntoSet
