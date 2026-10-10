@@ -337,12 +337,19 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
             clearallButton.setOnClickListener(this);
             clearallButton.setVisibility(mClearAll ? VISIBLE : GONE);
         }
+        View clearAllRow = findViewById(R.id.clear_all_container);
+        if (clearAllRow != null) {
+            clearAllRow.setVisibility(mClearAll ? VISIBLE : GONE);
+        }
 
         View lensButton = findViewById(R.id.action_lens);
         if (lensButton != null) {
             lensButton.setOnClickListener(this);
             lensButton.setVisibility(mLens && Utilities.isGSAEnabled(getContext()) ? VISIBLE : GONE);
         }
+
+        updateVerticalMargin(DisplayController.getNavigationMode(getContext()));
+        requestLayout();
     }
 
     /**
@@ -554,10 +561,24 @@ public class OverviewActionsView<T extends OverlayUICallbacks> extends FrameLayo
             return;
         }
 
+        int bottomMargin = getBottomMargin();
+        if (actionBar == mActionButtons) {
+            bottomMargin = Math.max(0, bottomMargin - getClearAllRowOffset());
+        }
+
         LayoutParams actionParams = (LayoutParams) actionBar.getLayoutParams();
         actionParams.setMargins(
                 actionParams.leftMargin, mDp.getOverviewProfile().getActionsTopMarginPx(),
-                actionParams.rightMargin, getBottomMargin());
+                actionParams.rightMargin, bottomMargin);
+    }
+
+    private int getClearAllRowOffset() {
+        View clearAllRow = findViewById(R.id.clear_all_container);
+        if (clearAllRow == null || clearAllRow.getVisibility() == GONE) {
+            return 0;
+        }
+        return getResources().getDimensionPixelSize(R.dimen.overview_actions_height)
+                + getResources().getDimensionPixelSize(R.dimen.overview_actions_button_spacing);
     }
 
     private int getBottomMargin() {
