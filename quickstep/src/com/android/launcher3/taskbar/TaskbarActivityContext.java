@@ -79,7 +79,6 @@ import android.os.Process;
 import android.os.Trace;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
-import android.provider.Settings.System;
 import android.util.Log;
 import android.util.Pair;
 import android.view.DisplayCutout;
@@ -246,7 +245,6 @@ public class TaskbarActivityContext extends BaseTaskbarContext {
     private static final Uri URI_NAVBAR_LAYOUT_MODE = Secure.getUriFor(Secure.NAVBAR_LAYOUT_MODE);
     private static final Uri URI_FORCE_SHOW_NAVBAR = LineageSettings.System.getUriFor(
             LineageSettings.System.FORCE_SHOW_NAVBAR);
-    private static final Uri URI_NAVBAR_LENGTH_MODE = System.getUriFor(System.GESTURE_NAVBAR_LENGTH_MODE);
 
     private static final String TAG = "TaskbarActivityContext";
 
@@ -307,7 +305,6 @@ public class TaskbarActivityContext extends BaseTaskbarContext {
     private final boolean mIsNavbarHintEnabled;
     private final int mNavbarLayoutMode;
     private final int mIsNavbarEnabled;
-    private final int mNavbarLengthMode;
 
     private boolean mIsDestroyed = false;
 
@@ -379,7 +376,6 @@ public class TaskbarActivityContext extends BaseTaskbarContext {
         mNavbarLayoutMode = settingsCache.getIntValue(URI_NAVBAR_LAYOUT_MODE);
         mIsNavbarEnabled = settingsCache.getIntValue(URI_FORCE_SHOW_NAVBAR,
                                 Utils.hasNavbarByDefault(mWindowContext) ? 1 : 0);
-        mNavbarLengthMode = settingsCache.getIntValue(URI_NAVBAR_LENGTH_MODE, 1);
         mBubbleFeatureConfig =
                 new BubbleFeatureConfigImpl(mWindowContext, getDesktopState(mWindowContext));
 
@@ -2536,10 +2532,6 @@ public class TaskbarActivityContext extends BaseTaskbarContext {
 
     public int getNavbarLayoutMode() {
         return mNavbarLayoutMode;
-    }
-
-    public int getNavbarLengthMode() {
-        return mNavbarLengthMode;
     }
 
     /**

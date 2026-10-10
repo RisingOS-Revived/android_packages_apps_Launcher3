@@ -15,15 +15,6 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-
-    <!-- Additional gesture navbar lengths -->
-    <dimen name="taskbar_stashed_small_screen_short">72dp</dimen>
-    <dimen name="taskbar_stashed_small_screen_long">140dp</dimen>
-    <dimen name="taskbar_stashed_handle_width_short">108dp</dimen>
-    <dimen name="taskbar_stashed_handle_width_long">300dp</dimen>
-    <dimen name="bubblebar_stashed_handle_width_short">35dp</dimen>
-    <dimen name="bubblebar_stashed_handle_width_long">75dp</dimen>
-
     <!-- Meminfo in overview -->
     <dimen name="meminfo_claimed_height">16dp</dimen>
 
