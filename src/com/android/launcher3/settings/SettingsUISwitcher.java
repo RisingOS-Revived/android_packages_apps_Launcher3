@@ -52,7 +52,6 @@ import com.android.launcher3.LauncherFiles;
 import com.android.launcher3.R;
 import com.android.launcher3.settings.preference.RestartPreference;
 import com.android.launcher3.Utilities;
-import com.android.launcher3.util.SettingsCache;
 
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
 
@@ -148,8 +147,7 @@ public class SettingsUISwitcher extends CollapsingToolbarBaseActivity
     /**
      * This fragment shows the launcher preferences.
      */
-    public static class UISwitcherSettingsFragment extends PreferenceFragmentCompat implements
-            SettingsCache.OnChangeListener {
+    public static class UISwitcherSettingsFragment extends PreferenceFragmentCompat {
 
         private boolean mRestartOnResume = false;
 
@@ -275,7 +273,6 @@ public class SettingsUISwitcher extends CollapsingToolbarBaseActivity
             }
         }
 
-        @Override
         public void onSettingsChanged(boolean isEnabled) {
             // Developer options changed, try recreate
             tryRecreateActivity();
